@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { ShowingReviews } from "./ShowingReviews";
 
 export const ReviewInitalInfo = ({ data }) => {
@@ -16,7 +16,7 @@ export const ReviewInitalInfo = ({ data }) => {
   }
 
   // Group reviews by rating
-  const groupReviewsByRating = () => {
+  const groupReviewsByRating = useCallback(() => {
     const reviewCounts = data.reviews.reduce((acc, review) => {
       const roundedRating = Math.round(review.rating);
       if (acc[roundedRating]) {
@@ -28,12 +28,12 @@ export const ReviewInitalInfo = ({ data }) => {
     }, {});
 
     setGroupedReviews(reviewCounts);
-  };
+  }, [data.reviews]);
 
   useEffect(() => {
     setRating(getAverage(data.reviews));
     groupReviewsByRating();
-  }, [groupReviewsByRating]);
+  }, [groupReviewsByRating, data.reviews]);
 
   const flooredRating = Math.floor(rating);
   const remainderRating = Math.round(rating) - flooredRating;
@@ -91,7 +91,7 @@ export const ReviewInitalInfo = ({ data }) => {
                   height="15"
                   viewBox="0 0 48 45"
                   role="img"
-                  aria-label="Rating: 1.0 out of 5 stars"
+                  aria-label={`Rating: ${rating} out of 5 stars`}
                 >
                   <path
                     d="M24.0001 1.18711L30.5912 15.3802L30.7099 15.636L30.9903 15.6667L46.828 17.3993L35.0668 27.8809L34.8506 28.0737L34.9102 28.3572L38.1178 43.6029L24.2426 35.9044L24 35.7698L23.7574 35.9044L9.88218 43.6029L13.0898 28.3572L13.1494 28.0737L12.9332 27.8809L1.17202 17.3993L17.0097 15.6667L17.2901 15.636L17.4088 15.3802L24.0001 1.18711Z"
