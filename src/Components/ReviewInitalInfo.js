@@ -33,7 +33,7 @@ export const ReviewInitalInfo = ({ data }) => {
   useEffect(() => {
     setRating(getAverage(data.reviews));
     groupReviewsByRating();
-  }, [data]);
+  }, [groupReviewsByRating]);
 
   const flooredRating = Math.floor(rating);
   const remainderRating = Math.round(rating) - flooredRating;
